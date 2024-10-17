@@ -1,0 +1,44 @@
+body {
+	background-color: #CCCCCC;
+}
+#main{
+width: 800px; 
+margin: 0 auto; 
+background-color: white;
+
+}
+
+
+#topo{
+background: black;
+color:white;
+sheight: 90px; 
+}
+
+#contentwrapper{
+float: left;
+width: 100%;
+xtext-align: center
+}
+
+#colunaprincipal{
+	margin: 10px 10px;
+	float:left;
+	width: 480px;
+}
+
+#colunainfo{
+	margin: 10px 10px;
+	float:left;
+	width: 280px;
+}
+
+
+#rodape{
+clear: left;
+width: 100%;
+background: black;
+color: #FFF;
+text-align: center;
+padding: 10px 0;
+}
