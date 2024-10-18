@@ -1,206 +1,195 @@
 <!DOCTYPE html>
-<html><head><title>Movimento Jogo de Plataforma</title>
-<link rel="stylesheet" href="main.css">
-<script>
+<html>
 
-//----------------------------------------------------------------------------------------------------
-// Este jogo foi criado apenas para uso didático.
-// Este segmento de código é utilizado para ilustrar o controle do teclado e o movimento de um personagem
-// em um jogo 2D de plataforma.
-// Especial agradecimento a Sithjester, site http://untamed.wild-refuge.net/rpgxp.php
-// pelo uso de imagens.
-// Desenvolvido por: Rodrigo de Losina Silva - Site: http://aprendendo-javascript.blogspot.com.br/
-// Seu uso é livre, para qualquer fim, inclusive comercial, inclusive com modificação do código, desde que:
-// 1. Seja mantido este comentário no fonte, incluida referencia ao autor e site.
-// 2. Seja disponível link para o site http://aprendendo-javascript.blogspot.com.br/ 
-// versão: 1.0
-//----------------------------------------------------------------------------------------------------
+<head>
+  <title>Movimento Jogo de Plataforma</title>
+  <link rel="stylesheet" href="main.css">
+  <script>
 
-var ESQUERDA = 39;
-var DIREITA = 37;
+    //----------------------------------------------------------------------------------------------------
+    // Este jogo foi criado apenas para uso didático.
+    // Este segmento de código é utilizado para ilustrar o controle do teclado e o movimento de um personagem
+    // em um jogo 2D de plataforma.
+    // Especial agradecimento a Sithjester, site http://untamed.wild-refuge.net/rpgxp.php
+    // pelo uso de imagens.
+    // Desenvolvido por: Rodrigo de Losina Silva - Site: http://aprendendo-javascript.blogspot.com.br/
+    // Seu uso é livre, para qualquer fim, inclusive comercial, inclusive com modificação do código, desde que:
+    // 1. Seja mantido este comentário no fonte, incluida referencia ao autor e site.
+    // 2. Seja disponível link para o site http://aprendendo-javascript.blogspot.com.br/ 
+    // versão: 1.0
+    //----------------------------------------------------------------------------------------------------
 
-var TAMANHO_CELULA = 32;
-var ALTURA_PERSONAGEM = 52;
-var IMAGEM_DIREITA = 2;
-var IMAGEM_ESQUERDA = 1;
+    var ESQUERDA = 39;
+    var DIREITA = 37;
 
-//--------------------------------------------------------------------------------------------------------
-//sprite
-// Esta é a função principal de desenho e controle de objetos no jogo. Todos os objetos em cena são
-//derivados desta função.
-//--------------------------------------------------------------------------------------------------------
-function sprite(x,y,ctx)
-{
-  this.x = x;
-  this.y = y;
-  this.oldx=x;
-  this.oldy=y;
-  this.ctx = ctx;
+    var TAMANHO_CELULA = 32;
+    var ALTURA_PERSONAGEM = 52;
+    var IMAGEM_DIREITA = 2;
+    var IMAGEM_ESQUERDA = 1;
 
-  this.etapaPasso = 0;
-  this.iniciouPasso=false;
-  this.iniciouDirecao = 0;
-  this.direcaoImagem = 0;
-  this.pararPasso=false;
+    //--------------------------------------------------------------------------------------------------------
+    //sprite
+    // Esta é a função principal de desenho e controle de objetos no jogo. Todos os objetos em cena são
+    //derivados desta função.
+    //--------------------------------------------------------------------------------------------------------
+    function sprite(x, y, ctx) {
+      this.x = x;
+      this.y = y;
+      this.oldx = x;
+      this.oldy = y;
+      this.ctx = ctx;
 
-  this.semiPasso = function()
-  {
-    console.log(this.x,this.iniciouDirecao)
-    var posicaoInterna_Celula = ((this.etapaPasso%4)+1)/4 * TAMANHO_CELULA;
-
-    switch (this.iniciouDirecao)
-    {
-      case ESQUERDA: this.x = this.oldx + posicaoInterna_Celula;this.direcaoImagem = IMAGEM_DIREITA; break;
-      case DIREITA: this.x = this.oldx - posicaoInterna_Celula;this.direcaoImagem = IMAGEM_ESQUERDA; break;
-      default:break;
-    }
-    this.etapaPasso = (this.etapaPasso+1) % 4;
-    if (this.etapaPasso == 0 )
-    {
+      this.etapaPasso = 0;
       this.iniciouPasso = false;
-      if (!this.pararPasso)
-      {
-        this.passo(this.iniciouDirecao);
-      }
-        
-    }
-  }
-  this.desenha = function()
-  {
-       this.ctx.drawImage(this.imagem, this.etapaPasso*TAMANHO_CELULA,this.direcaoImagem*ALTURA_PERSONAGEM, TAMANHO_CELULA, ALTURA_PERSONAGEM, this.x, this.y+10,TAMANHO_CELULA,ALTURA_PERSONAGEM);
-  }
-  this.passo = function(direcao)
-  {
-    if (!this.iniciouPasso)
-    {
-      var tempx = -1;
-      var tempy = -1;
-      this.iniciouPasso=true;
+      this.iniciouDirecao = 0;
+      this.direcaoImagem = 0;
       this.pararPasso = false;
-      this.iniciouDirecao = direcao;
-      this.oldx=this.x;
-      this.oldy=this.y;
-    }
-  }
-  this.para = function(direcao)
-  {
-    this.pararPasso = true;
-  }
-  this.setaMovimento = function(dx,dy)
-  {
-      this.dx = dx;
-      this.dy = dy;
-  }
-}
-sprite.prototype.ciclo = function()
-{
-    if (!this.ativo)
-      return false;
-    this.x = this.x+this.dx;
-    this.y = this.y+this.dy;
-    return true;
-}
 
-//--------------------------------------------------------------------------------------------------------
-//spritePersonagem
-//derivada de: sprite
-//controla o personagem do jogador
-//--------------------------------------------------------------------------------------------------------
-function spritePersonagem(x,y,ctx, idImagem) {
-  this.imagem = document.getElementById(idImagem);
-  sprite.call(this,x,y,ctx);
-  this.ciclo = function()
-  {
-    if (this.iniciouPasso)
-      this.semiPasso();   
-    return true;
-  }
+      this.semiPasso = function () {
+        console.log(this.x, this.iniciouDirecao)
+        var posicaoInterna_Celula = ((this.etapaPasso % 4) + 1) / 4 * TAMANHO_CELULA;
 
-}
-spritePersonagem.prototype = Object.create(sprite.prototype);
+        switch (this.iniciouDirecao) {
+          case ESQUERDA: this.x = this.oldx + posicaoInterna_Celula; this.direcaoImagem = IMAGEM_DIREITA; break;
+          case DIREITA: this.x = this.oldx - posicaoInterna_Celula; this.direcaoImagem = IMAGEM_ESQUERDA; break;
+          default: break;
+        }
+        this.etapaPasso = (this.etapaPasso + 1) % 4;
+        if (this.etapaPasso == 0) {
+          this.iniciouPasso = false;
+          if (!this.pararPasso) {
+            this.passo(this.iniciouDirecao);
+          }
 
-//----------------------------------------------------------------------------------------------------
-//classe cenario criada através de função.
-//mantém um vetor com todos os objetos em cena, e controla a criação e destruição destes objetos.
-//----------------------------------------------------------------------------------------------------
-  function cenario(width, height, idCanvas)
-  {
-  	this.width = width;
-  	this.height = height;
-  	this.canvas = document.getElementById(idCanvas);
-  	this.ctx = this.canvas.getContext("2d");
-
-    this.move = function (direcao)
-    {
-        this.personagem.passo(direcao);
-    }
-    this.para = function (direcao)
-    {
-        this.personagem.para(direcao);
-    }
-
-
-  	this.criaCenario = function()
-  	{
-      this.sprites = [];
-      this.personagem = new spritePersonagem(0,410, this.ctx,"personagem");
-      this.sprites[0] = this.personagem;
-  	}
-
-  	this.desenhaCenario = function()
-  	{
-		  this.ctx.clearRect(0, 0, this.width,  this.height);
-      for( var i = 0; i < this.sprites.length; i++) {
-        this.sprites[i].desenha();
+        }
       }
-  	}
+      this.desenha = function () {
+        this.ctx.drawImage(this.imagem, this.etapaPasso * TAMANHO_CELULA, this.direcaoImagem * ALTURA_PERSONAGEM, TAMANHO_CELULA, ALTURA_PERSONAGEM, this.x, this.y + 10, TAMANHO_CELULA, ALTURA_PERSONAGEM);
+      }
+      this.passo = function (direcao) {
+        if (!this.iniciouPasso) {
+          var tempx = -1;
+          var tempy = -1;
+          this.iniciouPasso = true;
+          this.pararPasso = false;
+          this.iniciouDirecao = direcao;
+          this.oldx = this.x;
+          this.oldy = this.y;
+        }
+      }
+      this.para = function (direcao) {
+        this.pararPasso = true;
+      }
+      this.setaMovimento = function (dx, dy) {
+        this.dx = dx;
+        this.dy = dy;
+      }
+    }
+    sprite.prototype.ciclo = function () {
+      if (!this.ativo)
+        return false;
+      this.x = this.x + this.dx;
+      this.y = this.y + this.dy;
+      return true;
+    }
 
-  	this.ciclo = function()
-  	{
-  		for( var i = 0; i < this.sprites.length; i++) {
-  			this.sprites[i].ciclo();
-  		}
-  		this.desenhaCenario();
-  	}
-  }
+    //--------------------------------------------------------------------------------------------------------
+    //spritePersonagem
+    //derivada de: sprite
+    //controla o personagem do jogador
+    //--------------------------------------------------------------------------------------------------------
+    function spritePersonagem(x, y, ctx, idImagem) {
+      this.imagem = document.getElementById(idImagem);
+      sprite.call(this, x, y, ctx);
+      this.ciclo = function () {
+        if (this.iniciouPasso)
+          this.semiPasso();
+        return true;
+      }
 
-  var meuCenario;
-  var intervalo=null;
+    }
+    spritePersonagem.prototype = Object.create(sprite.prototype);
 
-  function executaCiclo()
-  {
-   	meuCenario.ciclo();
-  }
+    //----------------------------------------------------------------------------------------------------
+    //classe cenario criada através de função.
+    //mantém um vetor com todos os objetos em cena, e controla a criação e destruição destes objetos.
+    //----------------------------------------------------------------------------------------------------
+    function cenario(width, height, idCanvas) {
+      this.width = width;
+      this.height = height;
+      this.canvas = document.getElementById(idCanvas);
+      this.ctx = this.canvas.getContext("2d");
 
-  window.onload = function(e)
-  {
-    meuCenario = new cenario(480,480,"myCanvas");
-    meuCenario.criaCenario();
-    meuCenario.desenhaCenario();
-  	intervalo = window.setInterval(executaCiclo,50);
+      this.move = function (direcao) {
+        this.personagem.passo(direcao);
+      }
+      this.para = function (direcao) {
+        this.personagem.para(direcao);
+      }
 
-  }
 
-  document.addEventListener('keydown', function(event) {
-    meuCenario.move(event.keyCode);
-});
-  document.addEventListener('keyup', function(event) {
-    meuCenario.para(event.keyCode);
-});
+      this.criaCenario = function () {
+        this.sprites = [];
+        this.personagem = new spritePersonagem(0, 410, this.ctx, "personagem");
+        this.sprites[0] = this.personagem;
+      }
 
-</script>
+      this.desenhaCenario = function () {
+        this.ctx.clearRect(0, 0, this.width, this.height);
+        for (var i = 0; i < this.sprites.length; i++) {
+          this.sprites[i].desenha();
+        }
+      }
+
+      this.ciclo = function () {
+        for (var i = 0; i < this.sprites.length; i++) {
+          this.sprites[i].ciclo();
+        }
+        this.desenhaCenario();
+      }
+    }
+
+    var meuCenario;
+    var intervalo = null;
+
+    function executaCiclo() {
+      meuCenario.ciclo();
+    }
+
+    window.onload = function (e) {
+      meuCenario = new cenario(480, 480, "myCanvas");
+      meuCenario.criaCenario();
+      meuCenario.desenhaCenario();
+      intervalo = window.setInterval(executaCiclo, 50);
+
+    }
+
+    document.addEventListener('keydown', function (event) {
+      meuCenario.move(event.keyCode);
+    });
+    document.addEventListener('keyup', function (event) {
+      meuCenario.para(event.keyCode);
+    });
+
+  </script>
+
+
 </head>
+
 <body>
-<div id="main">
- <div id="topo"><h1></h1></div>
- <div id="contentwrapper">
-  <div id="colunaprincipal">
-   <canvas id="myCanvas" width="480" height="480" style="border:1px solid #000000;"></canvas>
+  <div id="main">
+    <div id="topo">
+      <h1></h1>
+    </div>
+    <div id="contentwrapper">
+      <div id="colunaprincipal">
+        <canvas id="myCanvas" width="480" height="480" style="border:1px solid #000000;"></canvas>
+      </div>
+    </div>
+    <div id="rodape">
+      <img src=gourrygabriev.png id="personagem" style="display:none">
+    </div>
   </div>
- </div>
- <div id="rodape">
-  <img src=gourrygabriev.png id="personagem" style="display:none">
- </div>
-</div>
 </body>
+
 </html>
