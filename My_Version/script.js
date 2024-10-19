@@ -5,3 +5,7 @@ let height_personage = 52;
 let image_hight = 2;
 let image_left = 1;
 
+function sprit(x,y,ctx){
+
+    
+}
