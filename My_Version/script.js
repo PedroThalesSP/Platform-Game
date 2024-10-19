@@ -19,6 +19,13 @@ this.direction_image = 0;
 }
 
 this.half_steps = function(){
+let internal_position_cell = ((this.stage_steps%4) + 1) / 4 * size_cell;
+switch (this.started_direction){
+    case left: this.x = this.oldx + internal_position_cell; this.direction_image = image_hight; break;
+    case right: this.x = this.oldx - internal_position_cell; this.direction_image = image_left; break;
+}
+
+
 
 }
 
