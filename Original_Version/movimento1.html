@@ -42,6 +42,10 @@ function sprite(x,y,ctx)
   this.iniciouDirecao = 0;
   this.direcaoImagem = 0;
 
+
+
+
+  
   this.semiPasso = function()
   {
     var posicaoInterna_Celula = ((this.etapaPasso%4)+1)/4 * TAMANHO_CELULA;
@@ -58,6 +62,11 @@ function sprite(x,y,ctx)
       this.iniciouPasso = false;
     }
   }
+
+
+
+
+
   this.desenha = function()
   {
        this.ctx.drawImage(this.imagem, this.etapaPasso*TAMANHO_CELULA,this.direcaoImagem*ALTURA_PERSONAGEM, TAMANHO_CELULA, ALTURA_PERSONAGEM, this.x, this.y+10,TAMANHO_CELULA,ALTURA_PERSONAGEM);
